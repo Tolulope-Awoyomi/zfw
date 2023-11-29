@@ -1,0 +1,2 @@
+class WasteFacilitatorsController < ApplicationController
+end
