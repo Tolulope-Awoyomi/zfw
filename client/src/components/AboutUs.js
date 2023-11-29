@@ -69,64 +69,7 @@ function AboutUs() {
         </div>
       </section>
 
-        {/* <section className="section teams">
-        <div className="container">
-            <div className="row justify-content-center">
-            <div className="col-12">
-                <div className="section-title text-center">
-                <h2>Our Team</h2>
-                <p>Here's the passionate team that aims to take a stance against food waste and protecting our planet.</p>
-                </div>
-            </div>
-            </div>
-            <div className="row position-relative">
-            <div className="col-xl-3 col-lg-4 col-md-6 mt-4">
-                <div className="card bg-transparent border-0 text-center">
-                <div className="card-img">
-                    <img loading="lazy" decoding="async" src="../about/Woodside.jpeg" alt="Cassidy Woodside" className="rounded w-100" width="300" height="332" />
-                </div>
-                <div className="card-body">
-                    <h3>Cassidy Woodside</h3>
-                    <p>Title</p>
-                </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6 mt-4">
-                <div className="card bg-transparent border-0 text-center">
-                <div className="card-img">
-                    <img loading="lazy" decoding="async" src="../about/Francesca.png" alt="Francesca Manfucci" className="rounded w-100" width="300" height="333" />
-                </div>
-                <div className="card-body">
-                    <h3>Francesca Manfucci</h3>
-                    <p>Title</p>
-                </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6 mt-4">
-                <div className="card bg-transparent border-0 text-center">
-                <div className="card-img">
-                    <img loading="lazy" decoding="async" src="../about/Shuruq.png" alt="Shuruq Alyami" className="rounded w-100" width="300" height="333" />
-                </div>
-                <div className="card-body">
-                    <h3>Shuruq Alyami</h3>
-                    <p>Title</p>
-                </div>
-                </div>
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6 mt-4">
-                <div className="card bg-transparent border-0 text-center">
-                <div className="card-img">
-                    <img loading="lazy" decoding="async" src="../about/Tolu.jpg" alt="Tolulope Awoyomi" className="rounded w-100" width="300" height="332" />
-                </div>
-                <div className="card-body">
-                    <h3>Tolulope Awoyomi</h3>
-                    <p>Title</p>
-                </div>
-                </div>
-            </div>
-            </div> */}
-        {/* </div>
-        </section> */}
+        
 
     </>
   );
