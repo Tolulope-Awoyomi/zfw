@@ -7,7 +7,7 @@ function HistoryFoodRequestor() {
   
   useEffect(() => {
     fetchFoodRequests();
-  });
+  }, []);
 
   if (!Array.isArray(foodRequests)) {
     return <div>Loading...</div>;

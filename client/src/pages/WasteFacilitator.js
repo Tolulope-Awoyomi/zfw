@@ -30,14 +30,6 @@ function WasteFacilitator() {
           <section className="section">
             <div className="container">
               <div className="row justify-content-center">
-                {/* <div className="icon-box-item text-center col-lg-4 col-md-6 mb-4">
-                  <div className="rounded shadow py-5 px-4">
-                    <div className="icon"><i className="fas fa-recycle"></i></div>
-                    <h3 className="mb-3">Waste Pickup Requests</h3>
-                    <p className="mb-4">Empowers food waste facilitator to view data pertaining to the food waste disposal pickups.</p>
-                    <Link className="btn btn-sm btn-outline-primary" to="/wastepickuprequests"><b>View</b><i className="las la-arrow-right ms-1"></i></Link>
-                  </div>
-                </div> */}
                 <div className="icon-box-item text-center col-lg-4 col-md-6 mb-4">
                   <div className="rounded shadow py-5 px-4">
                     <div className="icon"><i className="fas fa-recycle"></i></div>

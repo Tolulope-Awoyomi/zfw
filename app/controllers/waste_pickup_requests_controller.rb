@@ -32,11 +32,7 @@ class WastePickupRequestsController < ApplicationController
           @waste_pickup_request.destroy
           render json: { message: 'Waste pickup request was successfully canceled.' }
         end
-      
-        def pickedup_waste
-          pickedup_waste = WastePickupRequest.where(status: 'picked up')
-          render json: pickedup_waste 
-        end
+    
       
         private
         

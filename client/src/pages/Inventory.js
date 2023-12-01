@@ -9,7 +9,7 @@ function Inventory() {
 
   useEffect(() => {
     fetchItems()
-  })
+  }, [])
 
   if (!Array.isArray(items)) {
     return <div>Loading...</div>;

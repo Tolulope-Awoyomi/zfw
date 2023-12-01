@@ -102,7 +102,7 @@ function ItemsProvider({ children }) {
         console.error('Error:', error);
       });
   };
-  
+
   return (
     <ItemsContext.Provider value={{ items, setItems, addItem, updateItem, deleteItem, fetchItems, fetchDonationItems, fetchWasteItems, wasteItems, loading  }}>
       {children}

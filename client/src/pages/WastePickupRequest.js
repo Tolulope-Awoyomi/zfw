@@ -27,7 +27,7 @@ function HistoryWastePickup() {
       setScheduledWastes(savedScheduledWastes);
     }
     fetchCurrentUserDetails();
-  });
+  }, []);
   
   const fetchCurrentUserDetails = async () => {
     try {
@@ -265,17 +265,17 @@ function HistoryWastePickup() {
                             onChange={handleChange}
                           ></textarea>
                         </div>
+                        {errorsList.length > 0 && (
+                          <Error className="alert alert-danger" role="alert">
+                            {errorsList.map((error, index) => (
+                              <p key={index}>{error}</p>
+                            ))}
+                          </Error>
+                        )}
                         <button className="btn btn-primary w-100" onClick={handleScheduleClick}>Schedule Selected Pickup</button>
                 </form>
               </div>
             </div>
-            {errorsList.length > 0 && (
-              <Error className="alert alert-danger" role="alert">
-                {errorsList.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </Error>
-            )}
           </div>
         </div>
       )}

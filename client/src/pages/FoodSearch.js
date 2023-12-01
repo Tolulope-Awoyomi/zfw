@@ -17,7 +17,7 @@ function FoodSearch() {
 
   useEffect(() => {
     fetchDonationItems();
-  });
+  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -51,7 +51,19 @@ function FoodSearch() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const pickupDateTime = `${pickupDate}T${pickupTime}`;
+
+    if (!pickupDate || !pickupTime) {
+      alert("Please select a pickup date and time.");
+      return;
+    }
+
+    const today = new Date();
+    const selectedDateTime = new Date(pickupDate + 'T' + pickupTime);
+
+    if (selectedDateTime < today) {
+      alert("Pickup date and time cannot be in the past.");
+      return;
+    }
 
     const newRequests = Array.from(selectedItems.keys())
       .filter(itemId => selectedItems.get(itemId))
@@ -59,23 +71,29 @@ function FoodSearch() {
         const quantity = parseInt(pickupQuantities[itemId]);
         const item = items.find(it => it.id === parseInt(itemId));
 
+        if (!quantity || isNaN(quantity) || quantity <= 0) {
+          alert(`Invalid quantity for item: ${item.name}`);
+          return null;
+        }
+
         if (item && item.quantity >= quantity) {
           updateItem({ ...item, quantity: item.quantity - quantity });
-          navigate("/foodupdateshistory");
           return {
             item_id: item.id,
             quantity: quantity,
-            pickup_time: pickupDateTime,
+            pickup_time: selectedDateTime.toISOString(),
           };
         } else {
           alert(`Not enough stock for item: ${item.name}`);
           return null;
         }
-      });
+      }).filter(request => request !== null);
 
-    newRequests.forEach(addFoodRequest);
-    
-    setShowScheduleForm(false);
+    if (newRequests.length > 0) {
+      newRequests.forEach(addFoodRequest);
+      navigate("/foodupdateshistory");
+      setShowScheduleForm(false);
+    }
   };
 
   const formatDateForInput = (dateString) => {
@@ -86,16 +104,17 @@ function FoodSearch() {
   const getTodayDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
 
     return `${year}-${month}-${day}`;
   };
 
-  const filteredItems = Array.isArray(items) 
-  ? items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === '' || item.category === selectedCategory))
-  : [];
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCategory === '' || item.category === selectedCategory)
+  );
+
 
   return (
     <div>

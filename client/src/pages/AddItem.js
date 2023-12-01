@@ -166,19 +166,18 @@ function AddItem() {
                   <option value="waste">Waste</option>
                 </select>
               </div>
-
+              {errors.length > 0 && (
+                <div className="alert alert-danger">
+                  {errors.map((error, index) => (
+                    <Error key={index}>{error}</Error>
+                  ))}
+                </div>
+              )}
               <div className="button-container">
                 <button type="submit" className="btn btn-primary">Add Item</button>
               </div>
 
             </form>
-            {errors.length > 0 && (
-              <div className="alert alert-danger">
-                {errors.map((error, index) => (
-                  <Error key={index}>{error}</Error>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </section>
