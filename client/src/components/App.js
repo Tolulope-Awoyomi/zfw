@@ -14,13 +14,12 @@ import WasteFacilitator from '../pages/WasteFacilitator';
 import FoodRequestor from '../pages/FoodRequestor';
 import AddItem from '../pages/AddItem';
 import Inventory from '../pages/Inventory';
-import HistoryFoodBusiness from '../pages/HistoryFoodBusiness';
-import HistoryWasteFacilitator from '../pages/HistoryWasteFacilitator';
 import HistoryFoodRequestor from '../pages/HistoryFoodRequestor';
 import Contact from './Contact';
 import FoodSearch from '../pages/FoodSearch';
 import WastePickupRequest from '../pages/WastePickupRequest';
 import ViewWastePickupRequests from '../pages/ViewWastePickupRequests'
+import BeforeLogin from './BeforeLogin';
 
 
 function App() {
@@ -46,13 +45,12 @@ function App() {
             <Route path="/foodrequestor" element={<FoodRequestor />} />
             <Route path="/additem" element={<AddItem />} />
             <Route path="/inventory" element={<Inventory />} />
-            <Route path="/donatedfoodhistory" element={<HistoryFoodBusiness />} />
-            <Route path="/foodwastehistory" element={<HistoryWasteFacilitator />} />
             <Route path="/foodupdateshistory" element={<HistoryFoodRequestor />} />
             <Route path="/wastepickuprequest" element={<WastePickupRequest />} />
             <Route path="/viewwastepickuprequests" element={<ViewWastePickupRequests />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/foodsearch" element={<FoodSearch />} />
+            <Route path="/welcome" element={<BeforeLogin />} />
           </Routes>
         </main>
         <Footer />

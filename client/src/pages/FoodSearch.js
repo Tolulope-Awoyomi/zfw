@@ -17,7 +17,7 @@ function FoodSearch() {
 
   useEffect(() => {
     fetchDonationItems();
-  }, []);
+  });
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -61,7 +61,7 @@ function FoodSearch() {
 
         if (item && item.quantity >= quantity) {
           updateItem({ ...item, quantity: item.quantity - quantity });
-
+          navigate("/foodupdateshistory");
           return {
             item_id: item.id,
             quantity: quantity,
@@ -69,12 +69,12 @@ function FoodSearch() {
           };
         } else {
           alert(`Not enough stock for item: ${item.name}`);
-          throw new Error('Insufficient stock');
+          return null;
         }
       });
 
     newRequests.forEach(addFoodRequest);
-    navigate("/foodupdateshistory");
+    
     setShowScheduleForm(false);
   };
 
@@ -83,11 +83,19 @@ function FoodSearch() {
     return date.toISOString().split('T')[0];
   };
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const year = today.getFullYear();
+
+    return `${year}-${month}-${day}`;
+  };
+
   const filteredItems = Array.isArray(items) 
   ? items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedCategory === '' || item.category === selectedCategory))
   : [];
-
 
   return (
     <div>
@@ -182,9 +190,11 @@ function FoodSearch() {
                 </tbody>
               </table>
 
-              <button onClick={handleScheduleClick} className="btn btn-primary">
-                Schedule Pickup
-              </button>
+              <div className="button-container">
+                <button onClick={handleScheduleClick} className="btn btn-primary">
+                  Schedule Pickup
+                </button>
+              </div>
 
               {showScheduleForm && (
                 <form onSubmit={handleSubmit}>
@@ -207,6 +217,7 @@ function FoodSearch() {
                     type="date"
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
+                    min={getTodayDate()}
                   />
                   <label>Pickup Time:</label>
                   <input

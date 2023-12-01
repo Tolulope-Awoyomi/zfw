@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ItemsContext } from '../components/context/items';
+import { Error } from '../styles'; 
 
 function AddItem() {
   const { addItem } = useContext(ItemsContext);
@@ -13,6 +14,33 @@ function AddItem() {
     category: 'meals',
     item_type: 'donation'
   });
+  const [errors, setErrors] = useState([]);
+
+  const validateForm = () => {
+    const errors = [];
+    const today = new Date();
+    const purchaseDate = new Date(newItem.purchase_date);
+    const expirationDate = new Date(newItem.expiration_date);
+
+    if (!newItem.name) {
+      errors.push('Item name is required.');
+    }
+    if (!newItem.quantity || newItem.quantity < 1) {
+      errors.push('Quantity must be greater than 0.');
+    }
+    if (!newItem.purchase_date) {
+      errors.push('Purchase date is required.');
+    } else if (purchaseDate > today) {
+      errors.push('Purchase date cannot be in the future.');
+    }
+    if (!newItem.expiration_date) {
+      errors.push('Expiration date is required.');
+    } else if (expirationDate < today && newItem.item_type !== 'waste') {
+      errors.push('An item with a past expiration date can only be added as "Waste".');
+    }
+
+    return errors;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +49,15 @@ function AddItem() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addItem(newItem);
-    navigate('/inventory');
+    const formErrors = validateForm();
+    if (formErrors.length > 0) {
+      setErrors(formErrors);
+    } else {
+      addItem(newItem);
+      navigate('/inventory');
+    }
   };
+
 
   return (
     <>
@@ -54,7 +88,6 @@ function AddItem() {
                   name="name"
                   value={newItem.name}
                   onChange={handleChange}
-                  required
                 />
               </div>
 
@@ -67,7 +100,6 @@ function AddItem() {
                   name="quantity"
                   value={newItem.quantity}
                   onChange={handleChange}
-                  required
                 />
               </div>
 
@@ -80,7 +112,6 @@ function AddItem() {
                   name="purchase_date"
                   value={newItem.purchase_date}
                   onChange={handleChange}
-                  required
                 />
               </div>
 
@@ -93,7 +124,6 @@ function AddItem() {
                   name="expiration_date"
                   value={newItem.expiration_date}
                   onChange={handleChange}
-                  required
                 />
               </div>
 
@@ -105,7 +135,6 @@ function AddItem() {
                   name="category"
                   value={newItem.category}
                   onChange={handleChange}
-                  required
                 >
                   <option value="snacks_sides">Snacks & Sides</option>
                   <option value="vegetarian_vegan">Vegetarian & Vegan Dishes</option>
@@ -132,15 +161,24 @@ function AddItem() {
                   name="item_type"
                   value={newItem.item_type}
                   onChange={handleChange}
-                  required
                 >
                   <option value="donation">Donation</option>
                   <option value="waste">Waste</option>
                 </select>
               </div>
 
-              <button type="submit" className="btn btn-primary">Add Item</button>
+              <div className="button-container">
+                <button type="submit" className="btn btn-primary">Add Item</button>
+              </div>
+
             </form>
+            {errors.length > 0 && (
+              <div className="alert alert-danger">
+                {errors.map((error, index) => (
+                  <Error key={index}>{error}</Error>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

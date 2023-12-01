@@ -147,6 +147,12 @@
   color: white;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .edit-button:hover,
 .delete-button:hover {
   opacity: 0.8;

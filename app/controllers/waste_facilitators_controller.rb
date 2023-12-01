@@ -1,2 +1,0 @@
-class WasteFacilitatorsController < ApplicationController
-end

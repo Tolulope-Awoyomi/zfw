@@ -15,9 +15,7 @@ function FoodBusinessServices() {
     function navigateToWastePickupPage() {
       navigate("/wastepickuprequest")
     }
-    function navigateToDonatedFoodHistoryPage() {
-      navigate("/donatedfoodhistory")
-    }
+
 
     if (loggedIn) {
       return (
@@ -70,15 +68,6 @@ function FoodBusinessServices() {
                     <button className="btn btn-sm btn-outline-primary" onClick={navigateToWastePickupPage}><b>Schedule</b> <i className="las la-arrow-right ms-1"></i></button>
                   </div>
                 </div>
-                {/* Icon Box Item 4 */}
-                {/* <div className="icon-box-item text-center col-lg-4 col-md-6 mb-4">
-                  <div className="rounded shadow py-5 px-4">
-                    <div className="icon"><i className="fas fa-book"></i></div>
-                    <h3 className="mb-3">Food Request Updates & History</h3>
-                    <p className="mb-4">Displays live updates and history of all previous requests made by the food business, offering an overview of past interactions.</p>
-                    <button className="btn btn-sm btn-outline-primary" onClick={navigateToDonatedFoodHistoryPage}><b>View</b> <i className="las la-arrow-right ms-1"></i></button>
-                  </div>
-                </div> */}
               </div>
             </div>
           </section>

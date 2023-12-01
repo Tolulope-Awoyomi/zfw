@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faTwitter, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 function Footer() {
   return (
@@ -43,8 +40,6 @@ function Footer() {
             </div>
           </div>
 
-          
-
         {/* Bottom Row */}
         <div className="row align-items-center mt-5 text-center text-md-start">
           <div className="col-lg-4">
@@ -59,10 +54,5 @@ function Footer() {
   );
 }
 
-
-function handleSubscribe(event) {
-  event.preventDefault();
-  console.log('Form Submitted');
-}
 
 export default Footer;

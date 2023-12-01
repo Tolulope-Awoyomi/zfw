@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  
-  # Routing logic: fallback requests for React Router.
-  # Leave this here to help deploy your app later!
+
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 
   post '/login', to: 'sessions#create'
@@ -10,11 +8,13 @@ Rails.application.routes.draw do
   get '/me', to: 'users#show'
   get '/donated-items', to: 'items#donated_items'
   get '/waste-items', to: 'items#waste_items'
-  get '/allfoodrequests', to: 'foodrequests#allfoodrequests'
+  get '/count_donated_items', to: 'items#count_donated_items'
+  get '/current_user_details', to: 'users#current_user_details'
+  get '/food_business_requests', to: 'food_requests#food_business_requests'
   
   resources :users, only: [:create, :show] 
   resources :items
-  resources :food_requests
+  resources :food_requests 
   resources :waste_pickup_requests
-
+  
 end

@@ -53,9 +53,10 @@ function ItemsProvider({ children }) {
       return response.json();
     })
     .then(data => {
-      setItems(prevItems => [...prevItems, data]);
+      setItems(prevItems => Array.isArray(prevItems) ? [...prevItems, data] : [data]);
+      fetchItems(); 
       navigate("/inventory");
-    })
+    })    
     .catch(error => console.error('Error:', error));
   };
 
@@ -102,7 +103,6 @@ function ItemsProvider({ children }) {
       });
   };
   
-
   return (
     <ItemsContext.Provider value={{ items, setItems, addItem, updateItem, deleteItem, fetchItems, fetchDonationItems, fetchWasteItems, wasteItems, loading  }}>
       {children}

@@ -9,7 +9,11 @@ function Inventory() {
 
   useEffect(() => {
     fetchItems()
-  }, [])
+  })
+
+  if (!Array.isArray(items)) {
+    return <div>Loading...</div>;
+  }
   
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -72,7 +76,7 @@ function Inventory() {
                 <select className="form-control" name="category" value={editItem.category} onChange={handleChange}>
                   <option value="snacks_sides">Snacks & Sides</option>
                   <option value="vegetarian_vegan">Vegetarian & Vegan Dishes</option>
-                  <option value="sandwishes_wraps">Sandwishes & Wraps</option>
+                  <option value="sandwishes_wraps">Sandwiches & Wraps</option>
                   <option value="soups_stew">Soups & Stew</option>
                   <option value="seafood">Seafood</option>
                   <option value="meals">Prepared Meals</option>
@@ -97,7 +101,6 @@ function Inventory() {
                   <tr>
                     <th>Name</th>
                     <th>Inventory Type</th>
-                    {/* <th>Category</th> */}
                     <th>Quantity</th>
                     <th>Purchase/Made Date</th>
                     <th>Expiration Date</th>
@@ -109,7 +112,6 @@ function Inventory() {
                       <tr key={item.id}>
                       <td>{item.name}</td>
                       <td>{item.item_type}</td>
-                      {/* <td>{item.category}</td> */}
                       <td>{item.quantity}</td>
                       <td>{formatDateForInput(item.purchase_date)}</td>
                       <td>{formatDateForInput(item.expiration_date)}</td>

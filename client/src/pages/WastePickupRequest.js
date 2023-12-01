@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ItemsContext } from '../components/context/items';
-import { FormField } from '../styles';
+import { FormField, Error } from '../styles';
 
 function HistoryWastePickup() {
-  const { items, wasteItems, fetchWasteItems } = useContext(ItemsContext);
+  const { wasteItems, fetchWasteItems } = useContext(ItemsContext);
   const [selectedWastes, setSelectedWastes] = useState(new Map());
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [scheduledWastes, setScheduledWastes] = useState({});
-  const navigate = useNavigate();
+  const [errorsList, setErrorsList] = useState([]);
   const [formData, setFormData] = useState({
     business_name: '',
     email: '',
@@ -19,18 +19,6 @@ function HistoryWastePickup() {
     pickup_time: '',
     comments: ''
   });
-
-
-  const handleWasteSelection = (wasteId, isChecked) => {
-    const updatedSelection = new Map(selectedWastes);
-    if (isChecked) {
-      updatedSelection.set(wasteId, true);
-    } else {
-      updatedSelection.delete(wasteId);
-    }
-    setSelectedWastes(updatedSelection);
-    localStorage.setItem('selectedWastes', JSON.stringify(Array.from(updatedSelection.entries())));
-  };
   
   useEffect(() => {
     fetchWasteItems();
@@ -38,8 +26,25 @@ function HistoryWastePickup() {
     if (savedScheduledWastes) {
       setScheduledWastes(savedScheduledWastes);
     }
-  }, []);
+    fetchCurrentUserDetails();
+  });
   
+  const fetchCurrentUserDetails = async () => {
+    try {
+      const response = await fetch('/current_user_details'); 
+      if (!response.ok) throw new Error('Network response was not ok');
+      const userData = await response.json();
+      setFormData(formData => ({
+        ...formData,
+        business_name: userData.business_name,
+        email: userData.email,
+        phone_number: userData.phone_number,
+        address: userData.address
+      }));
+    } catch (error) {
+      setErrorsList(prevErrors => [...prevErrors, error.message || "Kindly fill all details"]);
+    }
+  };
 
   const handleScheduleClick = () => {
     setShowForm(true);
@@ -50,8 +55,20 @@ function HistoryWastePickup() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const validatePickupDate = () => {
+    const today = new Date();
+    const pickupDate = new Date(formData.pickup_date);
+    return pickupDate >= today;
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validatePickupDate()) {
+      setErrorsList(['Pickup date cannot be in the past. Must be at least 24 hours from now.']);
+      return;
+    }
+    
     try {
       const response = await fetch('/waste_pickup_requests', {
         method: 'POST',
@@ -69,7 +86,7 @@ function HistoryWastePickup() {
       setShowForm(false);
       setSelectedWastes(null);
     } catch (error) {
-      console.error('Error:', error);
+      setErrorsList(prevErrors => [...prevErrors, error.message || "Kindly fill all details"]);
     }
   };
 
@@ -85,34 +102,6 @@ function HistoryWastePickup() {
         onChange={() => setSelectedWastes(waste.id)}
       />
     );
-  };
-
-  const renderScheduleButton = () => {
-    const isAnyItemSelected = Array.from(selectedWastes.values()).some(value => value);
-    if (isAnyItemSelected && !showForm) {
-      return (
-        <div className="center-button">
-          <button className="btn btn-primary" onClick={handleScheduleClick}>
-            Schedule Waste Pickup
-          </button>
-        </div>
-      );
-    }
-    return null;
-  };
-  
-
-  const initialFormData = {
-    business_name: '',
-    email: '',
-    phone_number: '',
-    address: '',
-    waste_type: '',
-    quantity: '',
-    pickup_date: '',
-    pickup_time: '',
-    comments: '',
-    status: 'Not Scheduled'
   };
 
 
@@ -225,7 +214,6 @@ function HistoryWastePickup() {
                             name="waste_type"
                             value={formData.waste_type}
                             onChange={handleChange}
-                            required
                           >
                             <option value="">Select Type</option>
                             <option value="organic">Organic Waste</option>
@@ -281,6 +269,13 @@ function HistoryWastePickup() {
                 </form>
               </div>
             </div>
+            {errorsList.length > 0 && (
+              <Error className="alert alert-danger" role="alert">
+                {errorsList.map((error, index) => (
+                  <p key={index}>{error}</p>
+                ))}
+              </Error>
+            )}
           </div>
         </div>
       )}

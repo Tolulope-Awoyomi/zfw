@@ -7,7 +7,7 @@ function HistoryFoodRequestor() {
   
   useEffect(() => {
     fetchFoodRequests();
-  }, []);
+  });
 
   if (!Array.isArray(foodRequests)) {
     return <div>Loading...</div>;
@@ -19,6 +19,14 @@ function HistoryFoodRequestor() {
     return pickupDate > now;
   };
   
+  const sortedFoodRequests = [...foodRequests].sort((a, b) => {
+    const aIsUpcoming = isUpcoming(a.pickup_time);
+    const bIsUpcoming = isUpcoming(b.pickup_time);
+    if (aIsUpcoming && !bIsUpcoming) return -1;
+    if (!aIsUpcoming && bIsUpcoming) return 1;
+    return new Date(a.pickup_time) - new Date(b.pickup_time);
+  });
+
   return (
     <div>
       <section className="page-header bg-tertiary">
@@ -46,22 +54,22 @@ function HistoryFoodRequestor() {
                       <th style={{ textAlign: "center" }}><b>Name</b></th>
                       <th style={{ textAlign: "center" }}><b>Quantity</b></th>
                       <th style={{ textAlign: "center" }}><b>Pickup Date</b></th>
+                      <th style={{ textAlign: "center" }}><b>Pickup Time</b></th>
                       <th style={{ textAlign: "center" }}><b>Food Business</b></th>
                       <th style={{ textAlign: "center" }}><b>Pickup Address</b></th>
-                      {/* <th style={{ textAlign: "center" }}><b>Status</b></th> */}
                       <th style={{ textAlign: "center" }}><b>Pickup Schedule</b></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {foodRequests.map((request, index) => (
+                    {sortedFoodRequests.map((request, index) => (
                       <tr className="cart-item" key={index}>
                         <td style={{ textAlign: "center" }}>{request.item.name}</td> 
                         <td style={{ textAlign: "center" }}>{request.quantity}</td>
                         <td style={{ textAlign: "center" }}>{new Date(request.pickup_time).toLocaleDateString()}</td>
+                        <td style={{ textAlign: "center" }}>{new Date(request.pickup_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                         <td style={{ textAlign: "center" }}>{request.user_name}</td>
                         <td style={{ textAlign: "center" }}>{request.user_address}</td>
-                        {/* <td style={{ textAlign: "center" }}>{request.status}</td> */}
-                        <td style={{ textAlign: "center" }}>
+                        <td style={{ textAlign: "center", color: isUpcoming(request.pickup_time) ? 'green' : 'red' }}>
                           {isUpcoming(request.pickup_time) ? "Upcoming Pickup" : "Past Pickup"}
                         </td>
                       </tr>

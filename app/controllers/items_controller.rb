@@ -3,7 +3,7 @@ class ItemsController < ApplicationController
     before_action :set_item, only: [:update, :destroy]
 
     def create
-        @item = @current_user.items.create(items_params)
+        @item = Item.create(items_params)
         if @item.valid?
             render json: @item, status: :created
         else
@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
     end
 
     def index
-        @items = @current_user.items
+        @items = Item.where("quantity > 0")
         render json: @items
     end
 
@@ -34,14 +34,14 @@ class ItemsController < ApplicationController
     end
 
     def donated_items
-        donated_items = Item.where(item_type: 'donation')
+        donated_items = Item.where(item_type: 'donation').where("quantity > 0")
         render json: donated_items
-    end
+      end      
 
     def waste_items
-        waste_items = Item.where(item_type: 'waste')
+        waste_items = Item.where(item_type: 'waste').where("quantity > 0")
         render json: waste_items
-    end
+    end   
 
     private 
 

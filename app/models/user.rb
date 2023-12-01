@@ -8,6 +8,7 @@ class User < ApplicationRecord
     validates :password, confirmation: true
     validate :password_complexity
     validate :email_format
+    validate :phone_length
     
     
     def password_complexity
@@ -22,7 +23,10 @@ class User < ApplicationRecord
         end
     end
 
-    # def is_food_business?
-    #     self.category == "Food Business"
-    # end
+    def phone_length
+        unless phone_number.length == 10
+            errors.add :phone_number, "must be a valid number with 10 digits"
+        end
+    end  
+
 end

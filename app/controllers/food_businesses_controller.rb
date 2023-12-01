@@ -1,2 +1,0 @@
-class FoodBusinessesController < ApplicationController
-end

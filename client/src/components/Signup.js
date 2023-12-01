@@ -37,15 +37,8 @@ function Signup() {
         .then(user => {
             if (!user.errors) {
                 signup(user)
-                navigate('/loginform')
+                navigate('/welcome')
             } else {
-                setName("")
-                setEmail("")
-                setPassword("")
-                setPasswordConfirmation("")
-                setPhone_number("")
-                setAddress("")
-                setCategory("Food Business")
                 const errorLis = user.errors.map(e => <p key={e}>{e}</p>)
                 setErrorsList(errorLis)
             }
@@ -153,6 +146,13 @@ function Signup() {
                     </select>
                 </div>
                     <button type="submit" className="btn btn-primary w-100">Create Account</button>
+                    {errorsList.length > 0 && (
+                      <Error className="alert alert-danger" role="alert">
+                        {errorsList.map((error, index) => (
+                          <p key={index}>{error}</p>
+                        ))}
+                      </Error>
+                    )}
                     <div className="form-group mb-4 pb-2">
                   <ul className="list-unstyled">
                     <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li>
@@ -161,13 +161,6 @@ function Signup() {
                 </div>
               </form>
             </div>
-            {errorsList.length > 0 && (
-              <Error className="alert alert-danger" role="alert">
-                {errorsList.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </Error>
-            )}
           </div>
         </div>
       </div>

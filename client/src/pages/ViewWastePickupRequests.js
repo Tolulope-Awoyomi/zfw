@@ -37,8 +37,6 @@ function ViewWastePickupRequests() {
     }
   }
   
-  
-  
 
   return (
     <div>
@@ -83,7 +81,7 @@ function ViewWastePickupRequests() {
                 <td style={{ textAlign: "center" }}>{request.waste_type}</td>
                 <td style={{ textAlign: "center" }}>{request.quantity}</td>
                 <td style={{ textAlign: "center" }}>{new Date(request.pickup_date).toLocaleDateString()}</td>
-                <td style={{ textAlign: "center" }}>{new Date(request.pickup_time).toLocaleTimeString()}</td>
+                <td style={{ textAlign: "center" }}>{new Date(request.pickup_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                 <td style={{ textAlign: "center" }}>
                   {getStatus(request.pickup_date, request.pickup_time)}
                 </td>

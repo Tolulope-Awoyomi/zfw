@@ -37,19 +37,12 @@ function FoodRequestor() {
                     <Link className="btn btn-sm btn-outline-primary" to="/foodsearch"><b>Search</b> <i className="las la-arrow-right ms-1"></i></Link>
                   </div>
                 </div>
-                {/* <div className="icon-box-item text-center col-lg-4 col-md-6 mb-4">
-                  <div className="rounded shadow py-5 px-4">
-                    <div className="icon"><i className="fas fa-boxes"></i></div>
-                    <h3 className="mb-3">Food Pickup</h3>
-                    <p className="mb-4">Empowers food requestor to select relevant food items, reserving them for convenient pick-up.</p>
-                    <Link className="btn btn-sm btn-outline-primary" to="service-details.html"><b>View Scheduled pickup</b> <i className="las la-arrow-right ms-1"></i></Link>
-                  </div>
-                </div> */}
+    
                 <div className="icon-box-item text-center col-lg-4 col-md-6 mb-4">
                   <div className="rounded shadow py-5 px-4">
                     <div className="icon"><i className="fas fa-book"></i></div>
                     <h3 className="mb-3">Food Request Updates & History</h3>
-                    <p className="mb-4">Displays live updates and history of all previous requests made by the food requestor users.</p>
+                    <p className="mb-4">Displays live updates and history of all requests.</p>
                     <Link className="btn btn-sm btn-outline-primary" to="/foodupdateshistory"><b>View</b> <i className="las la-arrow-right ms-1"></i></Link>
                   </div>
                 </div>
