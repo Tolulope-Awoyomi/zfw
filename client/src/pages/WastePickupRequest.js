@@ -5,7 +5,7 @@ import { WastePickupRequestContext } from '../components/context/WastePickupRequ
 import { FormField, Error } from '../styles';
 
 function HistoryWastePickup() {
-  const { setWasteItems, wasteItems, fetchWasteItems, scheduledWastes, setScheduledWastes } = useContext(ItemsContext);
+  const { setWasteItems, wasteItems, fetchWasteItems, scheduledWastes } = useContext(ItemsContext);
   const { wastePickupRequest, handleFormChange, submitWastePickupRequest } = useContext(WastePickupRequestContext);
   const [selectedWaste, setSelectedWaste] = useState(null);
   const [showForm, setShowForm] = useState(false);
