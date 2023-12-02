@@ -12,12 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2023_12_02_064616) do
 
+  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "food_requests", force: :cascade do |t|
     t.integer "quantity"
     t.datetime "pickup_time"
-    t.string "status", default: "Scheduled"
     t.bigint "user_id", null: false
     t.bigint "item_id", null: false
     t.datetime "created_at", precision: 6, null: false
