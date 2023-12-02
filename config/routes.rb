@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get '/count_donated_items', to: 'items#count_donated_items'
   get '/current_user_details', to: 'users#current_user_details'
   get '/food_business_requests', to: 'food_requests#food_business_requests'
+  post 'password/forgot_password', to: 'password#forgot_password'
+  post 'password/reset', to: 'password#reset'
   
   resources :users, only: [:create, :show] 
   resources :items

@@ -1,42 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { WastePickupRequestContext } from '../components/context/WastePickupRequestContext';
 
 function ViewWastePickupRequests() {
-  const [requests, setRequests] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-    
-  useEffect(() => {
-    fetch('/waste_pickup_requests') 
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        setRequests(data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setIsLoading(false);
-      });
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { wastePickupRequests } = useContext(WastePickupRequestContext);
 
   function getStatus(pickupDate, pickupTime) {
     const now = new Date();
-    const pickupDateTime = new Date(`${pickupDate}`);
-    if (pickupDateTime < now) {
-      return 'Past Pickups';
-    } else {
-      return 'Upcoming Pickups';
-    }
+    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+    return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
   }
-  
 
   return (
     <div>
@@ -72,7 +45,7 @@ function ViewWastePickupRequests() {
             </tr>
           </thead>
           <tbody>
-            {requests.map((request, index) => (
+            {wastePickupRequests.map((request, index) => (
               <tr key={index}>
                 <td style={{ textAlign: "center" }}>{request.business_name}</td>
                 <td style={{ textAlign: "center" }}>{request.email}</td>
@@ -81,7 +54,7 @@ function ViewWastePickupRequests() {
                 <td style={{ textAlign: "center" }}>{request.waste_type}</td>
                 <td style={{ textAlign: "center" }}>{request.quantity}</td>
                 <td style={{ textAlign: "center" }}>{new Date(request.pickup_date).toLocaleDateString()}</td>
-                <td style={{ textAlign: "center" }}>{new Date(request.pickup_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                <td style={{ textAlign: "center" }}>{new Date(request.pickup_date + 'T' + request.pickup_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                 <td style={{ textAlign: "center" }}>
                   {getStatus(request.pickup_date, request.pickup_time)}
                 </td>

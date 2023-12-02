@@ -7,6 +7,7 @@ function ItemsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]); 
   const [wasteItems, setWasteItems] = useState([]);
+  const [scheduledWastes, setScheduledWastes] = useState({});
   const navigate = useNavigate()
 
   const fetchItems = () => {
@@ -95,16 +96,25 @@ function ItemsProvider({ children }) {
         return response.json();
       })
       .then(data => {
-        setItems(data); 
-        setWasteItems(data)
+        setWasteItems(data);
+  
+        const updatedScheduledWastes = {};
+        data.forEach(item => {
+          if (item.status === 'Scheduled') {
+            updatedScheduledWastes[item.id] = true;
+          }
+        });
+  
+        setScheduledWastes(updatedScheduledWastes);
       })
       .catch(error => {
         console.error('Error:', error);
       });
   };
+  
 
   return (
-    <ItemsContext.Provider value={{ items, setItems, addItem, updateItem, deleteItem, fetchItems, fetchDonationItems, fetchWasteItems, wasteItems, loading  }}>
+    <ItemsContext.Provider value={{ items, setItems, addItem, updateItem, deleteItem, fetchItems, fetchDonationItems, fetchWasteItems, wasteItems, setWasteItems, scheduledWastes, setScheduledWastes, loading  }}>
       {children}
     </ItemsContext.Provider>
   );

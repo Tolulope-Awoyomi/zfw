@@ -7,13 +7,16 @@ import { UserProvider } from "./components/context/user";
 import reportWebVitals from './reportWebVitals';
 import { ItemsProvider } from './components/context/items';
 import { FoodRequestProvider } from './components/context/foodrequests';
+import { WastePickupRequestProvider } from './components/context/WastePickupRequestContext';
 
 ReactDOM.render(
   <Router>
       <UserProvider> 
         <ItemsProvider>
           <FoodRequestProvider>
-          <App />
+            <WastePickupRequestProvider>
+              <App />
+            </WastePickupRequestProvider>
           </FoodRequestProvider>
         </ItemsProvider>
       </UserProvider>
@@ -21,7 +24,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

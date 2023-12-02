@@ -41,7 +41,7 @@ class WastePickupRequestsController < ApplicationController
         end
       
         def waste_pickup_request_params
-          params.permit(:business_name, :email, :phone_number, :address, :waste_type, :quantity, :pickup_date, :pickup_time, :comments, :item_id, :status)
+          params.require(:waste_pickup_request).permit(:business_name, :email, :phone_number, :address, :waste_type, :quantity, :pickup_date, :pickup_time, :comments, :item_id, :status)
         end
       
       
