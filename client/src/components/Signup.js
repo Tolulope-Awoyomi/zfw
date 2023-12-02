@@ -154,10 +154,10 @@ function Signup() {
                       </Error>
                     )}
                     <div className="form-group mb-4 pb-2">
-                  <ul className="list-unstyled">
+                  {/* {<ul className="list-unstyled">
                     <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li>
                     <li className="mb-2"><Link to="/loginform">Already have an account?</Link></li>
-                  </ul>
+                  </ul>} */}
                 </div>
               </form>
             </div>
