@@ -1,45 +1,46 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ItemsContext } from '../components/context/items';
-import { WastePickupRequestContext } from '../components/context/WastePickupRequestContext';
 import { FormField, Error } from '../styles';
 
 function HistoryWastePickup() {
-  const { setWasteItems, wasteItems, fetchWasteItems, scheduledWastes } = useContext(ItemsContext);
-  const { wastePickupRequest, handleFormChange, submitWastePickupRequest } = useContext(WastePickupRequestContext);
-  const [selectedWaste, setSelectedWaste] = useState(null);
+  const { wasteItems, fetchWasteItems } = useContext(ItemsContext);
+  const [selectedWastes, setSelectedWastes] = useState(new Map());
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [scheduledWastes, setScheduledWastes] = useState({});
   const [errorsList, setErrorsList] = useState([]);
   const [formData, setFormData] = useState({
     business_name: '',
     email: '',
     phone_number: '',
     address: '',
-    waste_type: '',
-    quantity: '',
     pickup_date: '',
     pickup_time: '',
     comments: ''
   });
-
+  
   useEffect(() => {
     fetchWasteItems();
+    const savedScheduledWastes = JSON.parse(localStorage.getItem('scheduledWastes'));
+    if (savedScheduledWastes) {
+      setScheduledWastes(savedScheduledWastes);
+    }
     fetchCurrentUserDetails();
   }, []);
-
+  
   const fetchCurrentUserDetails = async () => {
     try {
-      const response = await fetch('/current_user_details');
+      const response = await fetch('/current_user_details'); 
       if (!response.ok) throw new Error('Network response was not ok');
       const userData = await response.json();
-      setFormData({
+      setFormData(formData => ({
         ...formData,
         business_name: userData.business_name,
         email: userData.email,
         phone_number: userData.phone_number,
         address: userData.address
-      });
+      }));
     } catch (error) {
       setErrorsList(prevErrors => [...prevErrors, error.message || "Kindly fill all details"]);
     }
@@ -59,86 +60,55 @@ function HistoryWastePickup() {
     const pickupDate = new Date(formData.pickup_date);
     return pickupDate >= today;
   };
-
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.business_name) errors.push("Business name is required.");
-    if (!formData.email) errors.push("Email is required.");
-    if (!formData.phone_number) errors.push("Phone number is required.");
-    if (!formData.address) errors.push("Address is required.");
-    if (!formData.waste_type) errors.push("Waste type is required.");
-    if (!formData.quantity) errors.push("Quantity is required.");
-    if (!formData.pickup_date) errors.push("Pickup date is required.");
-    if (!formData.pickup_time) errors.push("Pickup time is required.");
-    return errors;
-  };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formErrors = validateForm();
-    if (formErrors.length > 0) {
-      setErrorsList(formErrors);
-      return;
-    }
-
     if (!validatePickupDate()) {
-      setErrorsList(['Pickup date cannot be in the past. Must be at least 24 hours from now.']);
+      setErrorsList(['Pickup date must be at least 24 hours from now.']);
       return;
     }
-
-    const payload = {
-      waste_pickup_request: {
-        ...formData,
-        item_id: selectedWaste, 
-        status: 'Scheduled'
-      }
-    };
-
+    
     try {
       const response = await fetch('/waste_pickup_requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...formData, item_id: selectedWastes, status: 'Scheduled' }),
       });
-  
-      if (response.ok) {
-        setWasteItems(prevItems => prevItems.filter(item => item.id !== selectedWaste));
-        setShowPopup(true);
-        setShowForm(false);
-      } else {
-        throw new Error('Failed to submit waste pickup request');
-      }
-      
-    } catch (error) {
-      setErrorsList(prevErrors => [...prevErrors, error.message || "Failed to submit waste pickup request"]);
-    }
-  };
 
-  const closePopup = () => {
-    setShowPopup(false);
-    setSelectedWaste(null); 
+      if (!response.ok) throw new Error('Failed to submit waste pickup request');
+
+      const newScheduledWastes = { ...scheduledWastes, [selectedWastes]: 'Scheduled' };
+      setScheduledWastes(newScheduledWastes);
+      localStorage.setItem('scheduledWastes', JSON.stringify(newScheduledWastes));
+
+      setShowPopup(true);
+      setShowForm(false);
+      setSelectedWastes(null);
+    } catch (error) {
+      setErrorsList(prevErrors => [...prevErrors, error.message || "Kindly fill all details"]);
+    }
   };
 
   const renderWasteSelection = (waste) => {
-    if (scheduledWastes[waste.id] || waste.status === 'Scheduled') {
-      return <span>Scheduled</span>;
+    const status = scheduledWastes[waste.id];
+    if (status) {
+      return status;
     }
-
     return (
       <input
-        type="radio"
-        name="wasteSelection"
-        checked={selectedWaste === waste.id}
-        onChange={() => setSelectedWaste(waste.id)}
+        type="checkbox"
+        checked={selectedWastes === waste.id}
+        onChange={() => setSelectedWastes(waste.id)}
       />
     );
   };
 
+
   return (
     <div>
-      {/* Page Header Section */}
-      <section className="page-header bg-tertiary">
+       {/* Page Header Section */}
+       <section className="page-header bg-tertiary">
         <div className="container">
           <div className="row">
             <div className="col-8 mx-auto text-center">
@@ -153,7 +123,7 @@ function HistoryWastePickup() {
       </section>
 
       {/* Waste List Section */}
-      <div className="container">
+      <div className="container"></div>
         <div className="col-5 mx-auto text-center">
           <h4 style={{ textAlign: "center" }}>Available Waste for Pick-Up</h4>
           <table className="table">
@@ -179,9 +149,9 @@ function HistoryWastePickup() {
               <button className="btn btn-primary" onClick={handleScheduleClick}>
                 Schedule Waste Pickup
               </button>
-            </div>
-          )}
-        </div>
+          </div>
+        
+        )}
       </div>
 
       {/* Waste Pickup Form */}
@@ -302,7 +272,7 @@ function HistoryWastePickup() {
                             ))}
                           </Error>
                         )}
-                       <button className="btn btn-primary w-100" type="submit">Submit</button>
+                        <button className="btn btn-primary w-100" onClick={handleScheduleClick}>Schedule Selected Pickup</button>
                 </form>
               </div>
             </div>
@@ -314,7 +284,7 @@ function HistoryWastePickup() {
       {showPopup && (
         <FormField>
           <h6>Pickup request submitted successfully!</h6>
-          <button onClick={closePopup} className="schedule-button">Close</button>
+          <button onClick={() => setShowPopup(false)} className="schedule-button">Close</button>
         </FormField>
       )}
     </div>

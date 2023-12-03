@@ -7,16 +7,13 @@ import { UserProvider } from "./components/context/user";
 import reportWebVitals from './reportWebVitals';
 import { ItemsProvider } from './components/context/items';
 import { FoodRequestProvider } from './components/context/foodrequests';
-import { WastePickupRequestProvider } from './components/context/WastePickupRequestContext';
 
 ReactDOM.render(
   <Router>
       <UserProvider> 
         <ItemsProvider>
           <FoodRequestProvider>
-            <WastePickupRequestProvider>
               <App />
-            </WastePickupRequestProvider>
           </FoodRequestProvider>
         </ItemsProvider>
       </UserProvider>

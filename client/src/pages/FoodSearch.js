@@ -110,10 +110,10 @@ function FoodSearch() {
     return `${year}-${month}-${day}`;
   };
 
-  const filteredItems = items.filter(item =>
+  const filteredItems = Array.isArray(items) ? items.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedCategory === '' || item.category === selectedCategory)
-  );
+  ) : [];
 
 
   return (
