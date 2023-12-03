@@ -23,11 +23,16 @@ function ViewWastePickupRequests() {
     const now = new Date();
     const formattedPickupDateTime = formatDateTime(pickupDate, pickupTime);
     const pickupDateTime = new Date(formattedPickupDateTime);
-    return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
+  
+    if (pickupDateTime.toDateString() === now.toDateString()) {
+      return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
+    } else {
+      return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
+    }
   }
+  
 
   function formatDateTime(date, time) {
-    // Assuming 'date' is in YYYY-MM-DD format and 'time' is in HH:MM format
     if (!date || !time) return '';
     return `${date}T${time}`;
   }
