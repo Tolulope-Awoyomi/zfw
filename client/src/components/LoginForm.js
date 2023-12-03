@@ -77,10 +77,10 @@ function LoginForm() {
                 </div>
                 <button className="btn btn-primary w-100" type="submit">Login</button>
                 <div className="form-group mb-4 pb-2">
-                  {/* <ul className="list-unstyled">
-                    <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li>
+                  <ul className="list-unstyled">
+                    {/* <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li> */}
                     <li className="mb-2"><Link to="/signup">A New User?</Link></li>
-                  </ul> */}
+                  </ul>
                 </div>
               </form>
             </div>

@@ -56,13 +56,13 @@ function Signup() {
             <div className="contact-form"></div>
                 <form onSubmit={handleSubmit}>
                 <div className="form-group mb-4 pb-2">
-                    <label htmlFor="name" className="form-label">Name </label> 
+                    <label htmlFor="name" className="form-label">Username </label> 
                     <input
                         type="text"
                         className="form-control shadow-none"
                         id="name"
                         autoComplete="off"
-                        placeholder="Enter your name..."
+                        placeholder="Enter your username..."
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     /> <br />  
@@ -154,10 +154,10 @@ function Signup() {
                       </Error>
                     )}
                     <div className="form-group mb-4 pb-2">
-                  {/* {<ul className="list-unstyled">
-                    <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li>
+                  {<ul className="list-unstyled">
+                    {/* <li className="mb-2"><Link to="/forgot-password">Forgot password?</Link></li> */}
                     <li className="mb-2"><Link to="/loginform">Already have an account?</Link></li>
-                  </ul>} */}
+                  </ul>}
                 </div>
               </form>
             </div>

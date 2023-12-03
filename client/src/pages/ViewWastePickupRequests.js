@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { WastePickupRequestContext } from '../components/context/WastePickupRequestContext';
 
 function ViewWastePickupRequests() {
-  const { wastePickupRequests } = useContext(WastePickupRequestContext);
+  const { wastePickupRequests = [] } = useContext(WastePickupRequestContext); 
 
   function getStatus(pickupDate, pickupTime) {
     const now = new Date();
