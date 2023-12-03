@@ -25,7 +25,7 @@ function ViewWastePickupRequests() {
     const pickupDateTime = new Date(formattedPickupDateTime);
   
     if (pickupDateTime.toDateString() === now.toDateString()) {
-      return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
+      return pickupDateTime.getTime() <= now.getTime() ? 'Past Pickups' : 'Upcoming Pickups';
     } else {
       return pickupDateTime < now ? 'Past Pickups' : 'Upcoming Pickups';
     }
